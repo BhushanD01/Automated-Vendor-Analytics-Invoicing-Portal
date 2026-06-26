@@ -1,1 +1,3 @@
 # Automated-Vendor-Analytics-Invoicing-Portal
+
+![Status: In Progress](https://img.shields.io/badge/status-in--progress-yellow)
