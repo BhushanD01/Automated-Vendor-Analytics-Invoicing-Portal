@@ -1,3 +1,4 @@
 .env
 myenv/
 mysql.sql
+__pycache__/

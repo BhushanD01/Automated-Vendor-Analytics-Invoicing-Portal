@@ -128,6 +128,32 @@ def get_product_history(cursor, product_id):
     return cursor.fetchall()
 
 
+def place_reorder(cursor, db, product_id , reorder_quantity):
+    query= """
+         insert into reorders (reorder_id,product_id ,reorder_quantity,reorder_date ,status)
+         SELECT max(reorder_id)+1,%s, %s, curdate(), "Ordered" FROM reorders;"""
+
+    cursor.execute(query,(product_id, reorder_quantity))
+    db.commit()
 
 
+def get_pending_reorders(cursor):
 
+    query = """
+        SELECT
+            r.reorder_id,
+            p.product_name
+        FROM reorders r
+        JOIN products p 
+        ON r.product_id = p.product_id
+        WHERE r.status = 'Ordered'
+        ORDER BY r.reorder_date DESC;
+    """
+
+    cursor.execute(query)
+    return cursor.fetchall() 
+
+
+def mark_reorder_as_received(cursor, db, reorder_id):
+    cursor.callproc("MarkReorderasReceived",[reorder_id])
+    db.commit()
